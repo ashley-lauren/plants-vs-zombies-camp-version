@@ -469,6 +469,9 @@ def collect_caffeine(pos):
             })
 
             caffeine_drops.remove(drop)
+            return True
+
+    return False
 
 
 def draw_grid():
@@ -669,14 +672,15 @@ while running:
 
                 y += 55
 
-            # Click caffeine pickup
-            collect_caffeine((mx, my))
+            # Click caffeine pickup first
+            collected = collect_caffeine((mx, my))
 
-            # Click grid to place instructor
-            row, col = grid_position_from_mouse((mx, my))
+            # Only place instructor if you did NOT collect caffeine
+            if not collected:
+                row, col = grid_position_from_mouse((mx, my))
 
-            if row is not None:
-                place_instructor(row, col)
+                if row is not None:
+                    place_instructor(row, col)
 
     if not game_over:
         spawn_timer += 1
@@ -689,7 +693,7 @@ while running:
             spawn_enemy()
             spawn_timer = 0
 
-        if caffeine_timer >= 150:
+        if caffeine_timer >= 200:
             spawn_caffeine()
             caffeine_timer = 0
 
