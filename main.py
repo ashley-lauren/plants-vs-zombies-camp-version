@@ -20,19 +20,36 @@ CELL_SIZE = 90
 GRID_X = 180
 GRID_Y = 120
 
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GREEN = (120, 200, 120)
-DARK_GREEN = (70, 150, 70)
-BROWN = (160, 110, 60)
-RED = (220, 70, 70)
-BLUE = (70, 130, 220)
-YELLOW = (240, 220, 80)
-GRAY = (180, 180, 180)
-PURPLE = (160, 90, 220)
-ORANGE = (240, 150, 60)
-PINK = (240, 130, 180)
-CYAN = (80, 210, 220)
+# -----------------------------
+# THEME COLORS
+# mostly dark grey / white / lime, with optional accent colors
+# -----------------------------
+BACKGROUND = (24, 25, 28)       # main background
+PANEL = (36, 38, 43)            # sidebar / cards
+PANEL_DARK = (28, 30, 34)
+CELL_LIGHT = (54, 57, 63)       # grid tiles
+CELL_DARK = (45, 48, 53)
+GRID = (82, 86, 94)             # subtle grid borders
+TEXT = (245, 247, 250)
+TEXT_DIM = (165, 171, 180)
+BLACK = (8, 10, 12)
+WHITE = (245, 247, 250)
+
+LIME = (147, 255, 66)           # main highlight
+LIME_DARK = (94, 205, 55)
+LIME_SOFT = (197, 255, 166)
+
+# Accent colors for individual instructors/enemies/projectiles
+RED = (255, 88, 88)
+YELLOW = (255, 215, 86)
+GREEN = (88, 235, 145)
+BLUE = (90, 170, 255)
+CYAN = (91, 225, 230)
+PURPLE = (185, 125, 255)
+ORANGE = (255, 165, 80)
+PINK = (255, 135, 190)
+BROWN = (175, 128, 80)
+GRAY = (150, 155, 165)
 
 font = pygame.font.SysFont(None, 32)
 small_font = pygame.font.SysFont(None, 23)
@@ -80,15 +97,15 @@ INSTRUCTORS = {
         "cost": 50,
         "damage": 20,
         "cooldown": 80,
-        "color": BLUE,
+        "color": RED,
         "sprite_file": "blossom.png",
-        "projectile_color": YELLOW
+        "projectile_color": RED
     },
     "Cam": {
         "cost": 100,
         "damage": 45,
         "cooldown": 140,
-        "color": GRAY,
+        "color": RED,
         "sprite_file": "cam.png",
         "projectile_color": RED
     },
@@ -96,49 +113,49 @@ INSTRUCTORS = {
         "cost": 75,
         "damage": 12,
         "cooldown": 40,
-        "color": GREEN,
+        "color": RED,
         "sprite_file": "ed-e.png",
-        "projectile_color": WHITE
+        "projectile_color": RED
     },
     "Gizmo": {
         "cost": 90,
         "damage": 28,
         "cooldown": 95,
-        "color": PURPLE,
+        "color": RED,
         "sprite_file": "gizmo.png",
-        "projectile_color": CYAN
+        "projectile_color": RED
     },
     "Hippo": {
         "cost": 80,
         "damage": 18,
         "cooldown": 60,
-        "color": BROWN,
+        "color": RED,
         "sprite_file": "hippo.png",
-        "projectile_color": ORANGE
+        "projectile_color": RED
     },
     "Mr-Loop": {
         "cost": 70,
         "damage": 16,
         "cooldown": 55,
-        "color": PINK,
+        "color": RED,
         "sprite_file": "mr-loop.png",
-        "projectile_color": WHITE
+        "projectile_color": RED
     },
     "Red": {
         "cost": 85,
         "damage": 32,
         "cooldown": 110,
-        "color": CYAN,
+        "color": RED,
         "sprite_file": "red.png",
-        "projectile_color": BLUE
+        "projectile_color": RED
     },
     "Ring": {
         "cost": 60,
         "damage": 10,
         "cooldown": 35,
-        "color": ORANGE,
+        "color": RED,
         "sprite_file": "ring.png",
-        "projectile_color": PINK
+        "projectile_color": RED
     },
     "Wall-E": {
         "cost": 125,
@@ -146,15 +163,15 @@ INSTRUCTORS = {
         "cooldown": 155,
         "color": RED,
         "sprite_file": "wall-e.png",
-        "projectile_color": PURPLE
+        "projectile_color": RED
     },
     "Zevo": {
         "cost": 40,
         "damage": 8,
         "cooldown": 45,
-        "color": YELLOW,
+        "color": RED,
         "sprite_file": "zevo.png",
-        "projectile_color": GREEN
+        "projectile_color": RED
     }
 }
 
@@ -175,7 +192,7 @@ ENEMY_TYPES = [
         "name": "Camper",
         "health": 100,
         "speed": 0.45,
-        "color": RED,
+        "color": YELLOW,
         "sprite": load_image("camper.png", (70, 70))
     },
     {
@@ -189,14 +206,14 @@ ENEMY_TYPES = [
         "name": "Minecraft Kid",
         "health": 220,
         "speed": 0.25,
-        "color": BROWN,
+        "color": YELLOW,
         "sprite": load_image("tank_camper.png", (70, 70))
     },
     {
         "name": "Bug Reporter",
         "health": 130,
         "speed": 0.38,
-        "color": PURPLE,
+        "color": YELLOW,
         "sprite": load_image("bug_camper.png", (70, 70))
     }
 ]
@@ -206,7 +223,7 @@ CAFFEINE_ITEMS = [
         "name": "Coffee",
         "value": 25,
         "emoji": "C",
-        "color": BROWN,
+        "color": LIME,
         "sprite": load_image("coffee.png", (42, 42))
     },
     {
@@ -464,15 +481,15 @@ def draw_grid():
                 CELL_SIZE
             )
 
-            color = GREEN if (row + col) % 2 == 0 else DARK_GREEN
+            color = CELL_LIGHT if (row + col) % 2 == 0 else CELL_DARK
             pygame.draw.rect(screen, color, rect)
-            pygame.draw.rect(screen, BLACK, rect, 2)
+            pygame.draw.rect(screen, GRID, rect, 1)
 
 
 def draw_sidebar():
-    pygame.draw.rect(screen, (230, 230, 210), (0, 0, 170, HEIGHT))
+    pygame.draw.rect(screen, PANEL, (0, 0, 170, HEIGHT))
 
-    draw_text(f"Caffeine: {caffeine}", 15, 18)
+    draw_text(f"⚡ CAFFEINE: {caffeine}", 15, 18, LIME)
 
     y = 60
 
@@ -482,19 +499,23 @@ def draw_sidebar():
         rect = pygame.Rect(12, y, 145, 48)
 
         if selected_instructor == name:
-            pygame.draw.rect(screen, YELLOW, rect)
+            pygame.draw.rect(screen, LIME, rect)
+            pygame.draw.rect(screen, LIME_SOFT, rect, 2)
+            name_color = BLACK
+            cost_color = BLACK
         else:
-            pygame.draw.rect(screen, WHITE, rect)
+            pygame.draw.rect(screen, PANEL_DARK, rect)
+            pygame.draw.rect(screen, GRID, rect, 1)
+            name_color = TEXT
+            cost_color = TEXT_DIM
 
-        pygame.draw.rect(screen, BLACK, rect, 2)
-
-        draw_text(f"{i + 1}. {name}", 20, y + 7, BLACK, use_tiny=True)
-        draw_text(f"{data['cost']} caffeine", 20, y + 25, BLACK, use_tiny=True)
+        draw_text(f"{i + 1}. {name}", 20, y + 7, name_color, use_tiny=True)
+        draw_text(f"{data['cost']} caffeine", 20, y + 25, cost_color, use_tiny=True)
 
         y += 55
 
-    draw_text("Keys 1-0 select", 18, HEIGHT - 60, BLACK, use_small=True)
-    draw_text("Click grid to place", 18, HEIGHT - 35, BLACK, use_small=True)
+    draw_text("Keys 1-0 select", 18, HEIGHT - 60, TEXT_DIM, use_small=True)
+    draw_text("Click grid to place", 18, HEIGHT - 35, TEXT_DIM, use_small=True)
 
 
 def draw_instructors():
@@ -506,7 +527,7 @@ def draw_instructors():
             screen.blit(data["sprite"], rect)
         else:
             pygame.draw.circle(screen, data["color"], (plant["x"], plant["y"]), 32)
-            draw_text(plant["type"][0], plant["x"] - 8, plant["y"] - 12, BLACK)
+            draw_text(plant["type"][0], plant["x"] - 8, plant["y"] - 12, TEXT)
 
 
 def draw_enemies():
@@ -520,15 +541,17 @@ def draw_enemies():
         bar_width = 60
         health_ratio = max(0, enemy["health"] / enemy["max_health"])
 
-        pygame.draw.rect(screen, RED, (enemy["x"] - 30, enemy["y"] - 48, bar_width, 8))
-        pygame.draw.rect(screen, GREEN, (enemy["x"] - 30, enemy["y"] - 48, bar_width * health_ratio, 8))
+        pygame.draw.rect(screen, PANEL_DARK, (enemy["x"] - 30, enemy["y"] - 48, bar_width, 8))
+        pygame.draw.rect(screen, LIME, (enemy["x"] - 30, enemy["y"] - 48, bar_width * health_ratio, 8))
+        pygame.draw.rect(screen, GRID, (enemy["x"] - 30, enemy["y"] - 48, bar_width, 8), 1)
 
-        draw_text(enemy["name"], enemy["x"] - 35, enemy["y"] + 35, BLACK, use_tiny=True)
+        draw_text(enemy["name"], enemy["x"] - 35, enemy["y"] + 35, TEXT, use_tiny=True)
 
 
 def draw_projectiles():
     for proj in projectiles:
         pygame.draw.circle(screen, proj["color"], (int(proj["x"]), int(proj["y"])), 8)
+        pygame.draw.circle(screen, WHITE, (int(proj["x"]), int(proj["y"])), 3)
 
 
 def draw_caffeine():
@@ -537,33 +560,34 @@ def draw_caffeine():
             rect = drop["sprite"].get_rect(center=(drop["x"], drop["y"]))
             screen.blit(drop["sprite"], rect)
         else:
-            pygame.draw.circle(screen, drop["color"], (drop["x"], drop["y"]), 22)
-            draw_text(drop["emoji"], drop["x"] - 6, drop["y"] - 8, BLACK, use_small=True)
+            pygame.draw.circle(screen, LIME, (drop["x"], drop["y"]), 23)
+            pygame.draw.circle(screen, PANEL_DARK, (drop["x"], drop["y"]), 17)
+            draw_text(drop["emoji"], drop["x"] - 6, drop["y"] - 8, LIME, use_small=True)
 
 
 def draw_floating_texts():
     for text in floating_texts:
-        draw_text(text["text"], text["x"], text["y"], BLACK, use_tiny=True)
+        draw_text(text["text"], text["x"], text["y"], LIME, use_tiny=True)
 
 
 def draw_timer():
     elapsed = (pygame.time.get_ticks() - start_ticks) // 1000
     remaining = max(0, game_length_seconds - elapsed)
 
-    draw_text(f"Time: {remaining}", 900, 20)
+    draw_text(f"TIME: {remaining}", 900, 20, TEXT)
 
     return remaining
 
 
 def draw_game_over():
-    screen.fill(BLACK)
+    screen.fill(BACKGROUND)
 
     if win:
-        draw_text("YOU WIN! Parent Showcase survived!", 340, 280, WHITE)
+        draw_text("YOU WIN! Parent Showcase survived!", 340, 280, LIME)
     else:
-        draw_text("GAME OVER! The campers reached the lab!", 330, 280, WHITE)
+        draw_text("GAME OVER! The campers reached the lab!", 330, 280, TEXT)
 
-    draw_text("Press R to restart", 440, 330, WHITE)
+    draw_text("Press R to restart", 440, 330, TEXT_DIM)
 
 
 def restart_game():
@@ -619,7 +643,7 @@ running = True
 
 while running:
     clock.tick(FPS)
-    screen.fill(WHITE)
+    screen.fill(BACKGROUND)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -665,7 +689,7 @@ while running:
             spawn_enemy()
             spawn_timer = 0
 
-        if caffeine_timer >= 280:
+        if caffeine_timer >= 150:
             spawn_caffeine()
             caffeine_timer = 0
 
