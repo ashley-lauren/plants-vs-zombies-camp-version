@@ -41,6 +41,23 @@ tiny_font = pygame.font.SysFont(None, 18)
 # -----------------------------
 # IMAGE LOADING
 # -----------------------------
+ASSET_FOLDER = "assets"
+INSTRUCTOR_FOLDER = "assets/instructors"
+INSTRUCTOR_SPRITE_SIZE = (70, 70)
+
+def load_image_from_folder(folder, filename, size):
+    if filename is None:
+        return None
+
+    path = os.path.join(folder, filename)
+
+    if os.path.exists(path):
+        image = pygame.image.load(path).convert_alpha()
+        return pygame.transform.scale(image, size)
+
+    print(f"Missing sprite: {path}")
+    return None
+
 def load_image(filename, size):
     path = os.path.join("assets", filename)
 
@@ -50,93 +67,107 @@ def load_image(filename, size):
 
     return None
 
+def add_sprites_to_instructors():
+    for name in INSTRUCTORS:
+        filename = INSTRUCTORS[name]["sprite_file"]
+        INSTRUCTORS[name]["sprite"] = load_image(filename, INSTRUCTOR_SPRITE_SIZE)
 
 # -----------------------------
 # CUSTOMIZE THESE!
 # -----------------------------
 INSTRUCTORS = {
-    "Python": {
+    "Blossom": {
         "cost": 50,
         "damage": 20,
         "cooldown": 80,
         "color": BLUE,
-        "sprite": load_image("python_teacher.png", (70, 70)),
+        "sprite_file": "blossom.png",
         "projectile_color": YELLOW
     },
-    "Robotics": {
+    "Cam": {
         "cost": 100,
         "damage": 45,
         "cooldown": 140,
         "color": GRAY,
-        "sprite": load_image("robotics_teacher.png", (70, 70)),
+        "sprite_file": "cam.png",
         "projectile_color": RED
     },
-    "GameDev": {
+    "Ed-E": {
         "cost": 75,
         "damage": 12,
         "cooldown": 40,
         "color": GREEN,
-        "sprite": load_image("gamedev_teacher.png", (70, 70)),
+        "sprite_file": "ed-e.png",
         "projectile_color": WHITE
     },
-    "Physics": {
+    "Gizmo": {
         "cost": 90,
         "damage": 28,
         "cooldown": 95,
         "color": PURPLE,
-        "sprite": load_image("physics_teacher.png", (70, 70)),
+        "sprite_file": "gizmo.png",
         "projectile_color": CYAN
     },
-    "Minecraft": {
+    "Hippo": {
         "cost": 80,
         "damage": 18,
         "cooldown": 60,
         "color": BROWN,
-        "sprite": load_image("minecraft_teacher.png", (70, 70)),
+        "sprite_file": "hippo.png",
         "projectile_color": ORANGE
     },
-    "Video": {
+    "Mr-Loop": {
         "cost": 70,
         "damage": 16,
         "cooldown": 55,
         "color": PINK,
-        "sprite": load_image("video_teacher.png", (70, 70)),
+        "sprite_file": "mr-loop.png",
         "projectile_color": WHITE
     },
-    "Math": {
+    "Red": {
         "cost": 85,
         "damage": 32,
         "cooldown": 110,
         "color": CYAN,
-        "sprite": load_image("math_teacher.png", (70, 70)),
+        "sprite_file": "red.png",
         "projectile_color": BLUE
     },
-    "Art": {
+    "Ring": {
         "cost": 60,
         "damage": 10,
         "cooldown": 35,
         "color": ORANGE,
-        "sprite": load_image("art_teacher.png", (70, 70)),
+        "sprite_file": "ring.png",
         "projectile_color": PINK
     },
-    "Director": {
+    "Wall-E": {
         "cost": 125,
         "damage": 55,
         "cooldown": 155,
         "color": RED,
-        "sprite": load_image("director.png", (70, 70)),
+        "sprite_file": "wall-e.png",
         "projectile_color": PURPLE
     },
-    "Counselor": {
+    "Zevo": {
         "cost": 40,
         "damage": 8,
         "cooldown": 45,
         "color": YELLOW,
-        "sprite": load_image("counselor.png", (70, 70)),
+        "sprite_file": "zevo.png",
         "projectile_color": GREEN
     }
 }
 
+def load_instructor_sprites():
+    for name in INSTRUCTORS:
+        sprite_file = INSTRUCTORS[name]["sprite_file"]
+        INSTRUCTORS[name]["sprite"] = load_image_from_folder(
+            INSTRUCTOR_FOLDER,
+            sprite_file,
+            INSTRUCTOR_SPRITE_SIZE
+        )
+
+load_instructor_sprites()
 INSTRUCTOR_NAMES = list(INSTRUCTORS.keys())
 
 ENEMY_TYPES = [
